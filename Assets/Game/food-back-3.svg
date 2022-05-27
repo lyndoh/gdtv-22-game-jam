@@ -14,32 +14,54 @@
    version="1.1"
    id="svg1675"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="food-back-1.svg">
+   sodipodi:docname="food-back-3.svg">
   <defs
      id="defs1669">
-    <linearGradient
-       inkscape:collect="always"
-       id="linearGradient2256">
-      <stop
-         style="stop-color:#b4ff8c;stop-opacity:1"
-         offset="0"
-         id="stop2252" />
-      <stop
-         style="stop-color:#00d800;stop-opacity:1"
-         offset="1"
-         id="stop2254" />
-    </linearGradient>
     <radialGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient2256"
-       id="radialGradient2260"
+       xlink:href="#linearGradient2256-3"
+       id="radialGradient2260-1"
        cx="-41.160961"
        cy="126.20781"
        fx="-41.160961"
        fy="126.20781"
        r="133"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.13445876,0,-1.0525704e-8,0.58262638,65.624162,36.472783)" />
+       gradientTransform="matrix(0.13445876,0,-1.0525704e-8,0.58262638,65.624169,36.472791)" />
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient2256-3">
+      <stop
+         style="stop-color:#b4ff8c;stop-opacity:1"
+         offset="0"
+         id="stop2252-8" />
+      <stop
+         style="stop-color:#00d800;stop-opacity:1"
+         offset="1"
+         id="stop2254-4" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2256-3"
+       id="radialGradient2260-7"
+       cx="-41.160961"
+       cy="126.20781"
+       fx="-41.160961"
+       fy="126.20781"
+       r="133"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.13445876,0,-1.0525704e-8,0.58262638,65.62417,292.47279)" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2256-3"
+       id="radialGradient2260-8"
+       cx="-41.160961"
+       cy="126.20781"
+       fx="-41.160961"
+       fy="126.20781"
+       r="133"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.13445876,0,-1.0525704e-8,0.58262638,321.62417,292.47279)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -49,8 +71,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="400"
-     inkscape:cy="560"
+     inkscape:cx="817.14286"
+     inkscape:cy="987.61905"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -70,7 +92,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -79,12 +101,34 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:url(#radialGradient2260);fill-opacity:1;fill-rule:evenodd;stroke:#50ff28;stroke-width:19.0422;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect2238"
+       style="fill:url(#radialGradient2260-1);fill-opacity:1;fill-rule:evenodd;stroke:#50ff28;stroke-width:19.0422;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2238-10"
        width="216.95781"
        height="216.95778"
-       x="19.521091"
-       y="19.521091"
+       x="19.521099"
+       y="19.521099"
+       rx="27.32"
+       ry="27.320147"
+       inkscape:export-xdpi="25.4"
+       inkscape:export-ydpi="25.4" />
+    <rect
+       style="fill:url(#radialGradient2260-7);fill-opacity:1;fill-rule:evenodd;stroke:#50ff28;stroke-width:19.0422;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2238-9"
+       width="216.95781"
+       height="216.95778"
+       x="19.521101"
+       y="275.52109"
+       rx="27.32"
+       ry="27.320147"
+       inkscape:export-xdpi="25.4"
+       inkscape:export-ydpi="25.4" />
+    <rect
+       style="fill:url(#radialGradient2260-8);fill-opacity:1;fill-rule:evenodd;stroke:#50ff28;stroke-width:19.0422;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect2238-0"
+       width="216.95781"
+       height="216.95778"
+       x="275.52109"
+       y="275.52109"
        rx="27.32"
        ry="27.320147"
        inkscape:export-xdpi="25.4"

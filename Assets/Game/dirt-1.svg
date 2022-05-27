@@ -14,18 +14,18 @@
    version="1.1"
    id="svg1675"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
-   sodipodi:docname="food-back-1.svg">
+   sodipodi:docname="dirt-1.svg">
   <defs
      id="defs1669">
     <linearGradient
        inkscape:collect="always"
        id="linearGradient2256">
       <stop
-         style="stop-color:#b4ff8c;stop-opacity:1"
+         style="stop-color:#d38d5f;stop-opacity:1"
          offset="0"
          id="stop2252" />
       <stop
-         style="stop-color:#00d800;stop-opacity:1"
+         style="stop-color:#784421;stop-opacity:1"
          offset="1"
          id="stop2254" />
     </linearGradient>
@@ -34,12 +34,12 @@
        xlink:href="#linearGradient2256"
        id="radialGradient2260"
        cx="-41.160961"
-       cy="126.20781"
+       cy="127.11916"
        fx="-41.160961"
-       fy="126.20781"
+       fy="127.11916"
        r="133"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.13445876,0,-1.0525704e-8,0.58262638,65.624162,36.472783)" />
+       gradientTransform="matrix(0.13442328,0,-1.0522927e-8,0.58247273,65.640653,36.496968)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -70,7 +70,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -79,12 +79,12 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:url(#radialGradient2260);fill-opacity:1;fill-rule:evenodd;stroke:#50ff28;stroke-width:19.0422;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:url(#radialGradient2260);fill-opacity:1;fill-rule:evenodd;stroke:#c87137;stroke-width:19.0995;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect2238"
-       width="216.95781"
-       height="216.95778"
-       x="19.521091"
-       y="19.521091"
+       width="216.90059"
+       height="216.90054"
+       x="19.549751"
+       y="19.549751"
        rx="27.32"
        ry="27.320147"
        inkscape:export-xdpi="25.4"
