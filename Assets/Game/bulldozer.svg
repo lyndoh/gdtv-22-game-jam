@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="bulldozer.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="403.33435"
+     inkscape:cy="560"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:pagecheckerboard="true"
+     showborder="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#ffd42a;fill-rule:evenodd;stroke:#000000;stroke-width:3.70526;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect833"
+       width="163.85858"
+       height="126.74534"
+       x="94.985924"
+       y="1.8526311"
+       rx="12.956988"
+       ry="10.689129" />
+    <rect
+       style="fill:#ffd42a;fill-rule:evenodd;stroke:#000000;stroke-width:3.70526;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect835"
+       width="363.42996"
+       height="124.64457"
+       x="1.8526311"
+       y="118.79444"
+       rx="12.956989"
+       ry="10.689139" />
+    <path
+       id="rect837"
+       style="fill:#4d4d4d;fill-rule:evenodd;stroke:#000000;stroke-width:3.70526;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 385.68783,105.48969 24.31275,40.61452 c 3.41524,5.70516 24.50945,89.57265 29.50852,91.83082 l 69.32479,31.31523 c 4.99908,2.25817 -5.353,9.90151 -12.00225,9.90151 H 385.68783 c -6.64925,0 -12.00227,-4.41607 -12.00227,-9.90151 V 115.3912 c 0,-5.48545 8.58703,-15.606662 12.00227,-9.90151 z"
+       sodipodi:nodetypes="sssssssss" />
+    <rect
+       style="fill:#00ffff;fill-rule:evenodd;stroke:#000000;stroke-width:3.70526;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect840"
+       width="84.030052"
+       height="84.730301"
+       x="156.60796"
+       y="22.860142"
+       rx="12.956989"
+       ry="10.689139" />
+    <rect
+       style="fill:#ffd42a;fill-rule:evenodd;stroke:#000000;stroke-width:3.70526;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect842"
+       width="212.87611"
+       height="50.41803"
+       x="197.22249"
+       y="166.41148"
+       rx="12.956989"
+       ry="10.689139" />
+    <ellipse
+       style="fill:#333333;fill-rule:evenodd;stroke:#000000;stroke-width:3.6648;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path844"
+       cx="88.523766"
+       cy="222.81197"
+       rx="72.272835"
+       ry="72.272842" />
+    <circle
+       style="fill:#ffcc00;fill-rule:evenodd;stroke:#000000;stroke-width:3.67761;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path848"
+       cx="88.523773"
+       cy="222.81197"
+       r="33.361183" />
+    <ellipse
+       style="fill:#333333;fill-rule:evenodd;stroke:#000000;stroke-width:3.66479;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path844-0"
+       cx="274.53012"
+       cy="222.81197"
+       rx="72.272835"
+       ry="72.272842" />
+    <circle
+       style="fill:#ffcc00;fill-rule:evenodd;stroke:#000000;stroke-width:3.67761;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path848-9"
+       cx="274.53012"
+       cy="222.81197"
+       r="33.361183" />
+  </g>
+</svg>

@@ -12,12 +12,16 @@ public class WormFoodManager : MonoBehaviour
 
     List<GameObject> foodQueue;
     GameObject activeFood;
-    GameObject groundBase;
 
     List<List<GameObject>> gameGrid;
 
     int currentRow;
     int currentCol;
+    bool pauseWhileClearing;
+
+    public void PauseWhileClearing(bool pause) {
+        this.pauseWhileClearing = pause;
+    }
 
     void Start()
     {
@@ -33,7 +37,7 @@ public class WormFoodManager : MonoBehaviour
         activeFood = null;
         currentRow = 22;
         currentCol = 6;
-        groundBase = GameObject.FindGameObjectWithTag("GroundBase");
+        pauseWhileClearing = false;
         
         foodQueue = new List<GameObject>();
         for (int i = 0; i < 10; ++i) {
@@ -45,6 +49,10 @@ public class WormFoodManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (pauseWhileClearing) {
+            return;
+        }
+        
         if (activeFood != null) {
             var wormFood = activeFood.GetComponent<WormFood>();
 
@@ -84,8 +92,7 @@ public class WormFoodManager : MonoBehaviour
         // }
 
         foreach (var foodPrefab in foodQueue) {
-            var groundLevel = groundBase.transform.position.y + 50;
-            activeFood = Instantiate(foodPrefab, new Vector3(0, -50 + (gameGrid.Count * 4), 0), Quaternion.identity);
+            activeFood = Instantiate(foodPrefab, new Vector3(0, GetGroundLevel() - 4 + (gameGrid.Count * 4), 0), Quaternion.identity);
             currentRow = 22;
             currentCol = 6;
             //activeFood = Instantiate(foodPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -95,6 +102,10 @@ public class WormFoodManager : MonoBehaviour
             var accumulatedTime = 0f;
             var timePerDrop = 1.0f;
             while (activeFood != null) {
+                if (pauseWhileClearing) {
+                    yield return null;
+                    continue;
+                }
                 var dropped = false;
                 accumulatedTime += Time.deltaTime;
                 if (accumulatedTime >= timePerDrop) {
@@ -122,10 +133,6 @@ public class WormFoodManager : MonoBehaviour
                     }
                 }
                     
-                    // if (activeFood.transform.position.y <= groundLevel) {
-                    //     activeFood.transform.position = new Vector3(activeFood.transform.position.x, groundLevel, 0);
-                    //     activeFood = null;
-                    // }
                 yield return null;
             }
         }
@@ -148,5 +155,9 @@ public class WormFoodManager : MonoBehaviour
 
     public GameObject GetBlock(int row, int col) {
         return gameGrid[row][col];
+    }
+
+    public float GetGroundLevel() {
+        return -46;
     }
 }
