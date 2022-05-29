@@ -15,6 +15,7 @@ public class WormFoodManager : MonoBehaviour
 
     List<List<GameObject>> gameGrid;
 
+    float dropTimeLimit = 5.0f;
     int currentRow;
     int currentCol;
     bool pauseWhileClearing;
@@ -34,9 +35,8 @@ public class WormFoodManager : MonoBehaviour
             gameGrid.Add(row);
 
         }
+        dropTimeLimit = 5.0f;
         activeFood = null;
-        currentRow = 22;
-        currentCol = 6;
         pauseWhileClearing = false;
         
         foodQueue = new List<GameObject>();
@@ -51,37 +51,7 @@ public class WormFoodManager : MonoBehaviour
     {
         if (pauseWhileClearing) {
             return;
-        }
-        
-        if (activeFood != null) {
-            var wormFood = activeFood.GetComponent<WormFood>();
-
-            if (Keyboard.current.leftArrowKey.wasPressedThisFrame) {
-                if (currentCol > 0 && 
-                    wormFood.IsBlockGridColEmpty(-currentCol + 1) &&
-                    !WouldCollide(currentRow, currentCol - 1)) {
-                    --currentCol;
-                    activeFood.transform.position += new Vector3(-4, 0, 0);
-                }
-            }
-            if (Keyboard.current.rightArrowKey.wasPressedThisFrame) {
-                if (currentCol < 12 && 
-                    wormFood.IsBlockGridColEmpty(13 - currentCol) &&
-                    !WouldCollide(currentRow, currentCol + 1)) {
-                    ++currentCol;
-                    activeFood.transform.position += new Vector3(4, 0, 0);
-                }
-            }
-            
-            if (Keyboard.current.upArrowKey.wasPressedThisFrame) {
-                if (wormFood.IsBlockGridColEmpty(-currentCol, true) &&
-                    wormFood.IsBlockGridColEmpty(14 - currentCol, true) &&
-                    !WouldCollide(currentRow, currentCol, true)) {
-                    activeFood.GetComponent<WormFood>().Rotate();
-                }
-            }
-        }
-        
+        }        
     }
 
     IEnumerator PlayFood() {
@@ -90,51 +60,86 @@ public class WormFoodManager : MonoBehaviour
         //     instance.GetComponent<SpriteRenderer>().sprite = food;
         //     yield return new WaitForSeconds(2);
         // }
+        var dropSource = new Vector3(0, GetGroundLevel() - 4 + (gameGrid.Count * 4), 0);
 
         foreach (var foodPrefab in foodQueue) {
-            activeFood = Instantiate(foodPrefab, new Vector3(0, GetGroundLevel() - 4 + (gameGrid.Count * 4), 0), Quaternion.identity);
-            currentRow = 22;
-            currentCol = 6;
-            //activeFood = Instantiate(foodPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            //activeFood.GetComponent<SpriteRenderer>().sprite = food;
-            //var activeFoodHelfHeight = activeFood.GetComponent<WormFood>().blocks.GetComponent<SpriteRenderer>().localBounds.size.y / 2;
+            activeFood = Instantiate(foodPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            var wormFood = activeFood.GetComponent<WormFood>();
+            // Should rotation be set based on food type?
+            for (int i = 0; i < Random.Range(0, 4); ++i) {
+                wormFood.Rotate();
+            }
+            wormFood.SetGhost(true);
+            
 
+            currentRow = gameGrid.Count - 1;
+            currentCol = 6;
+
+            SetActiveFoodPositionForColumn(currentCol);
+    
+            var dropped = false;
             var accumulatedTime = 0f;
-            var timePerDrop = 1.0f;
+            //var timePerDrop = 1.0f;
+            while (!dropped) {
+                if (pauseWhileClearing) {
+                    yield return null;
+                    continue;
+                }
+
+                if (Keyboard.current.leftArrowKey.wasPressedThisFrame) {
+                    if (currentCol > 0 && 
+                        wormFood.IsBlockGridColEmpty(-currentCol + 1)/* &&
+                        !WouldCollide(currentRow, currentCol - 1)*/) {
+                        --currentCol;
+                        SetActiveFoodPositionForColumn(currentCol);
+                    }
+                }
+                if (Keyboard.current.rightArrowKey.wasPressedThisFrame) {
+                    if (currentCol < 12 && 
+                        wormFood.IsBlockGridColEmpty(13 - currentCol)/* &&
+                        !WouldCollide(currentRow, currentCol + 1)*/) {
+                        ++currentCol;
+                        SetActiveFoodPositionForColumn(currentCol);
+                    }
+                }
+
+                accumulatedTime += Time.deltaTime;
+                dropped = (accumulatedTime >= dropTimeLimit) || (Keyboard.current.downArrowKey.wasPressedThisFrame);
+                if (!dropped) {
+                    yield return null;
+                }
+            }
+
+            // TODO check if drop spot puts food above bounds of game area. if so game over?
+
+
+            // Drop!
+            var dropTarget = activeFood.transform.position;
+            activeFood.transform.position = dropSource + new Vector3(activeFood.transform.position.x, 0, 0);
+            wormFood.SetGhost(false);
+
             while (activeFood != null) {
                 if (pauseWhileClearing) {
                     yield return null;
                     continue;
                 }
-                var dropped = false;
-                accumulatedTime += Time.deltaTime;
-                if (accumulatedTime >= timePerDrop) {
-                    accumulatedTime -= timePerDrop;
-                    dropped = true;
-                }
-                if (Keyboard.current.downArrowKey.wasPressedThisFrame) {
-                    accumulatedTime = 0f;
-                    dropped = true;
-                }
 
-                if (dropped) {
-                    if (currentRow == 0 || WouldCollide(currentRow - 1, currentCol)) {
-                        var wormFood = activeFood.GetComponent<WormFood>();
-                        var offsets = wormFood.GetBlockOffsets();
-                        foreach (var offset in offsets) {
-                            var offsetRow = currentRow + offset.y;
-                            var offsetCol = currentCol + offset.x;
-                            gameGrid[offsetRow][offsetCol] = activeFood;
-                        }
-                        activeFood = null;
-                    } else {
-                        --currentRow;
-                        activeFood.transform.position += new Vector3(0, -4, 0);
+                activeFood.transform.position = Vector3.MoveTowards(activeFood.transform.position, dropTarget, 100 * Time.deltaTime);
+                
+                if (activeFood.transform.position == dropTarget) {
+                    
+                    var offsets = wormFood.GetBlockOffsets();
+                    foreach (var offset in offsets) {
+                        var offsetRow = currentRow + offset.y;
+                        var offsetCol = currentCol + offset.x;
+                        gameGrid[offsetRow][offsetCol] = activeFood;
                     }
+                    activeFood = null;
                 }
                     
                 yield return null;
             }
+
         }
     }
 
@@ -151,6 +156,17 @@ public class WormFoodManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    void SetActiveFoodPositionForColumn(int col) {
+        currentRow = gameGrid.Count;
+        for (int row = gameGrid.Count - 1; row >= 0; --row) {
+            if (WouldCollide(row, col)) {
+                break;
+            }
+            currentRow = row;
+        }
+        activeFood.transform.position = new Vector3(-24 + (col * 4), GetGroundLevel() + (currentRow * 4));
     }
 
     public GameObject GetBlock(int row, int col) {

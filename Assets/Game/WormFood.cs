@@ -6,6 +6,7 @@ using UnityEngine;
 public class WormFood : MonoBehaviour
 {
     public GameObject blocks;
+    
     int rotationIndex = 0;
 
     [SerializeField]
@@ -13,7 +14,8 @@ public class WormFood : MonoBehaviour
 
     Vector3[] rotationSet;
 
-    List<int>[] rotationGrid;    
+    List<int>[] rotationGrid;   
+    bool ghost; 
 
     static WormFood() {
         var gridSize = rotationGridCols.Length * rotationGridCols[0].Length;
@@ -51,13 +53,20 @@ public class WormFood : MonoBehaviour
         return rotationGrid[rotIndex].Select(x => rotationGridOffsets[x]).ToList();
     }
 
-    public void Start() {
+    public void SetGhost(bool on) {
+        ghost = on;
+        if (ghost) {
+            GetComponentInChildren<WormFoodBlocks>().GetComponent<SpriteRenderer>().color = new Color(0.8f, 0.8f, 0.8f, 0.6f);
+        } else {
+            GetComponentInChildren<WormFoodBlocks>().GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
+    }
+
+    void Awake() {
+        ghost = false;
         rotationSet = rotationSets[(int)blockType];
         rotationGrid = rotationGrids[(int)blockType];
         blocks.transform.localPosition = rotationSet[0];
-        if (blocks.GetComponent<Collider2D>() != null) {
-            Debug.Log("Has collider");
-        }
     }
 
     public void Rotate() {

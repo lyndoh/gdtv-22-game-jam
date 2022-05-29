@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blocks: {fileID: 8853657166499009699}
+  ghost: 0
   blockType: 0
 --- !u!1 &8853657166499009699
 GameObject:
