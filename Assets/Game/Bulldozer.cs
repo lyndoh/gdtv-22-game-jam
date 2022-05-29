@@ -9,16 +9,29 @@ public class Bulldozer : MonoBehaviour
     GroundManager groundManager;
     [SerializeField]
     WormFoodManager wormFoodManager;
+    [SerializeField]
+    GameGrid gameGrid;
 
     float checkFrequency = 30f;
     SpriteRenderer spriteRenderer;
+    bool allowClear = false;
+    bool readyToClear = false;
 
 
-    // Start is called before the first frame update
+    public void AllowClear(bool allow) {
+        allowClear = allow;
+    }
+
+    public bool IsClearing() {
+        return allowClear && readyToClear;
+    }
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.enabled = false;
+        allowClear = false;
+        readyToClear = false;
 
         StartCoroutine(Checker());
     }
@@ -26,12 +39,19 @@ public class Bulldozer : MonoBehaviour
     IEnumerator Checker() {
         while (true) {
             yield return new WaitForSeconds(checkFrequency);
+            readyToClear = true;
+            while (!allowClear) {
+                yield return null;
+            }
+
             var rowsToClear = groundManager.GetRowsToClear();
             if (rowsToClear > 0) {
-                StartCoroutine(ClearRows(rowsToClear));
+                yield return StartCoroutine(ClearRows(rowsToClear));
             } else {
                 StartCoroutine(Idle());
             }
+            allowClear = false;
+            readyToClear = false;
         }
     }
 
@@ -55,7 +75,6 @@ public class Bulldozer : MonoBehaviour
 
     IEnumerator ClearRows(int upToRow) {
         groundManager.PauseWhileClearing(true);
-        wormFoodManager.PauseWhileClearing(true);
 
         spriteRenderer.enabled = true;
         transform.position = new Vector3(-35, -42, 0);
@@ -68,16 +87,14 @@ public class Bulldozer : MonoBehaviour
                     if (spriteRenderer.flipX) {
                         var block = blocks.Last();
                         if (transform.position.x < block.transform.position.x) {
-                            Debug.Log("ClearBlock");
                             blocks.Remove(block);
-                            groundManager.ClearBlock(i, block);
+                            gameGrid.ClearBlock(i, block);
                         }
                     } else {
                         var block = blocks.First();
                         if (transform.position.x > block.transform.position.x) {
-                            Debug.Log("ClearBlock");
                             blocks.Remove(block);
-                            groundManager.ClearBlock(i, block);
+                            gameGrid.ClearBlock(i, block);
                         }
                     }
                 }
@@ -89,7 +106,9 @@ public class Bulldozer : MonoBehaviour
         spriteRenderer.enabled = false;
         spriteRenderer.flipX = false;
 
+        //groundManager.ClearEmptyRows(upToRow);
+        yield return gameGrid.ClearEmptyRows(upToRow);
+
         groundManager.PauseWhileClearing(false);
-        wormFoodManager.PauseWhileClearing(false);
     }
 }

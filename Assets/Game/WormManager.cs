@@ -10,6 +10,8 @@ public class WormManager : MonoBehaviour
     [SerializeField]
     GroundManager groundManager;
     [SerializeField]
+    GameGrid gameGrid;
+    [SerializeField]
     GameObject wormPrefab;
 
     List<GameObject> worms;
@@ -22,7 +24,7 @@ public class WormManager : MonoBehaviour
         var numberOfWorms = 3;
 
         for (int i = 0; i < numberOfWorms; ++i) {
-            var startPos = new Vector3(Random.Range(-27f, 27f), wormFoodManager.GetGroundLevel(), 0);
+            var startPos = new Vector3(Random.Range(-27f, 27f), gameGrid.GetGroundLevel(), 0);
             var worm = Instantiate(wormPrefab, startPos, Quaternion.identity);
             var wormComponent = worm.GetComponent<Worm>();
             wormComponent.wormId = i;

@@ -9,35 +9,24 @@ public class WormFoodManager : MonoBehaviour
     List<Sprite> foodSprites;
     [SerializeField]
     List<GameObject> foodPrefabs;
+    [SerializeField]
+    Bulldozer bulldozer;
+    [SerializeField]
+    GameGrid gameGrid;
 
     List<GameObject> foodQueue;
     GameObject activeFood;
 
-    List<List<GameObject>> gameGrid;
+    
 
     float dropTimeLimit = 5.0f;
     int currentRow;
     int currentCol;
-    bool pauseWhileClearing;
-
-    public void PauseWhileClearing(bool pause) {
-        this.pauseWhileClearing = pause;
-    }
-
+    
     void Start()
     {
-        gameGrid = new List<List<GameObject>>(23);
-        for (int i = 0; i < 23; ++i) {
-            var row = new List<GameObject>(13);
-            for (int j = 0; j < 13; ++j) {
-                row.Add(null);
-            }
-            gameGrid.Add(row);
-
-        }
         dropTimeLimit = 5.0f;
         activeFood = null;
-        pauseWhileClearing = false;
         
         foodQueue = new List<GameObject>();
         for (int i = 0; i < 10; ++i) {
@@ -49,9 +38,7 @@ public class WormFoodManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pauseWhileClearing) {
-            return;
-        }        
+              
     }
 
     IEnumerator PlayFood() {
@@ -60,7 +47,7 @@ public class WormFoodManager : MonoBehaviour
         //     instance.GetComponent<SpriteRenderer>().sprite = food;
         //     yield return new WaitForSeconds(2);
         // }
-        var dropSource = new Vector3(0, GetGroundLevel() - 4 + (gameGrid.Count * 4), 0);
+        var dropSource = new Vector3(0, gameGrid.GetGroundLevel() - 4 + (gameGrid.GetRowCount() * 4), 0);
 
         foreach (var foodPrefab in foodQueue) {
             activeFood = Instantiate(foodPrefab, new Vector3(0, 0, 0), Quaternion.identity);
@@ -72,7 +59,7 @@ public class WormFoodManager : MonoBehaviour
             wormFood.SetGhost(true);
             
 
-            currentRow = gameGrid.Count - 1;
+            currentRow = gameGrid.GetRowCount() - 1;
             currentCol = 6;
 
             SetActiveFoodPositionForColumn(currentCol);
@@ -81,11 +68,6 @@ public class WormFoodManager : MonoBehaviour
             var accumulatedTime = 0f;
             //var timePerDrop = 1.0f;
             while (!dropped) {
-                if (pauseWhileClearing) {
-                    yield return null;
-                    continue;
-                }
-
                 if (Keyboard.current.leftArrowKey.wasPressedThisFrame) {
                     if (currentCol > 0 && 
                         wormFood.IsBlockGridColEmpty(-currentCol + 1)/* &&
@@ -119,11 +101,6 @@ public class WormFoodManager : MonoBehaviour
             wormFood.SetGhost(false);
 
             while (activeFood != null) {
-                if (pauseWhileClearing) {
-                    yield return null;
-                    continue;
-                }
-
                 activeFood.transform.position = Vector3.MoveTowards(activeFood.transform.position, dropTarget, 100 * Time.deltaTime);
                 
                 if (activeFood.transform.position == dropTarget) {
@@ -132,14 +109,20 @@ public class WormFoodManager : MonoBehaviour
                     foreach (var offset in offsets) {
                         var offsetRow = currentRow + offset.y;
                         var offsetCol = currentCol + offset.x;
-                        gameGrid[offsetRow][offsetCol] = activeFood;
+                        gameGrid.AddFood(offsetRow, offsetCol, activeFood);
                     }
+                    Destroy(activeFood);
                     activeFood = null;
                 }
                     
                 yield return null;
             }
 
+            bulldozer.AllowClear(true);
+            while (bulldozer.IsClearing()) {
+                yield return null;
+            }
+            bulldozer.AllowClear(false);
         }
     }
 
@@ -149,9 +132,9 @@ public class WormFoodManager : MonoBehaviour
         foreach (var offset in offsets) {
             var offsetRow = row + offset.y;
             var offsetCol = col + offset.x;
-            if (offsetRow >= 0 && offsetRow < gameGrid.Count &&
-                offsetCol >= 0 && offsetCol < gameGrid[offsetRow].Count &&
-                gameGrid[offsetRow][offsetCol] != null) {
+            if (offsetRow >= 0 && offsetRow < gameGrid.GetRowCount() &&
+                offsetCol >= 0 && offsetCol < gameGrid.GetColumnCount() &&
+                gameGrid.HasFood(offsetRow, offsetCol)) {
                 return true;
             }
         }
@@ -159,21 +142,17 @@ public class WormFoodManager : MonoBehaviour
     }
 
     void SetActiveFoodPositionForColumn(int col) {
-        currentRow = gameGrid.Count;
-        for (int row = gameGrid.Count - 1; row >= 0; --row) {
+        currentRow = gameGrid.GetRowCount();
+        for (int row = gameGrid.GetRowCount() - 1; row >= 0; --row) {
             if (WouldCollide(row, col)) {
                 break;
             }
             currentRow = row;
         }
-        activeFood.transform.position = new Vector3(-24 + (col * 4), GetGroundLevel() + (currentRow * 4));
+        activeFood.transform.position = new Vector3(-24 + (col * 4), gameGrid.GetGroundLevel() + (currentRow * 4));
     }
 
     public GameObject GetBlock(int row, int col) {
-        return gameGrid[row][col];
-    }
-
-    public float GetGroundLevel() {
-        return -46;
+        return gameGrid.GetFood(row, col);
     }
 }

@@ -8,14 +8,16 @@ public class GroundManager : MonoBehaviour
     [SerializeField]
     WormFoodManager wormFoodManager;
     [SerializeField]
+    GameGrid gameGrid;
+    [SerializeField]
     GameObject dirtPrefab;
 
-    List<List<GameObject>> gameGrid;
+    
     int feedingRow;
     bool pauseWhileClearing;
 
     public IEnumerable<GameObject> GetFeedingBlocks() {
-        return gameGrid[feedingRow].Where(x => x != null && !x.GetComponent<Dirt>().isFinished);
+        return gameGrid.GetRowDirt(feedingRow).Where(x => x != null && !x.GetComponent<Dirt>().isFinished);
     }
 
     public int GetRowsToClear() {
@@ -23,14 +25,7 @@ public class GroundManager : MonoBehaviour
     }
 
     public IEnumerable<GameObject> GetBlocks(int row) {
-        return gameGrid[row].Where(x => x != null);
-    }
-
-    public void ClearBlock(int row, GameObject block) {
-        var blockIndex = gameGrid[row].FindIndex(x => x == block);
-        Debug.Log($"ClearBlock index {blockIndex}");
-        gameGrid[row][blockIndex] = null;
-        StartCoroutine(ClearBlockAnim(block));
+        return gameGrid.GetRowDirt(row).Where(x => x != null);
     }
 
     public void PauseWhileClearing(bool pause) {
@@ -40,15 +35,6 @@ public class GroundManager : MonoBehaviour
     void Start() {
         pauseWhileClearing = false;
         feedingRow = 0;
-        gameGrid = new List<List<GameObject>>(23);
-        for (int i = 0; i < 23; ++i) {
-            var row = new List<GameObject>(13);
-            for (int j = 0; j < 13; ++j) {
-                row.Add(null);
-            }
-            gameGrid.Add(row);
-
-        }
     }
 
     void Update() {
@@ -61,12 +47,12 @@ public class GroundManager : MonoBehaviour
             var allFinished = true;
             for (int col = 0; col < 13; ++col) {
                 var foodBlock = wormFoodManager.GetBlock(row, col);
-                if (gameGrid[row][col] == null && foodBlock != null) {
-                    StartCoroutine(AddDirt(row, col, wormFoodManager.GetBlock(row, col)));
+                if (!gameGrid.HasDirt(row, col) && gameGrid.HasFood(row, col)) {
+                    StartCoroutine(AddDirt(row, col, gameGrid.GetFood(row, col)));
                 }
-                hasAny = hasAny || foodBlock != null;
+                hasAny = hasAny || gameGrid.HasFood(row, col);
                 allFinished = allFinished && 
-                    (gameGrid[row][col] == null || gameGrid[row][col].GetComponent<Dirt>().isFinished);
+                    (!gameGrid.HasDirt(row, col) || gameGrid.GetDirt(row, col).GetComponent<Dirt>().isFinished);
             }
             if (!allFinished || !hasAny) {
                 feedingRow = row;
@@ -79,9 +65,10 @@ public class GroundManager : MonoBehaviour
         var scale = 0.01f;
         var dirtPos = new Vector3((col * 4) - 24, row * 4 - 44, 0);
         var dirt = Instantiate(dirtPrefab, dirtPos, Quaternion.identity);
+        dirt.transform.localScale = new Vector3(1, scale, 1);
         dirt.GetComponent<Dirt>().foodBlock = foodBlock;
         
-        gameGrid[row][col] = dirt;
+        gameGrid.AddDirt(row, col, dirt);
 
         while (scale < 1.0f) {
             if (pauseWhileClearing) {
@@ -102,11 +89,4 @@ public class GroundManager : MonoBehaviour
         dirt.GetComponent<Dirt>().isFinished = true;
     }
 
-    IEnumerator ClearBlockAnim(GameObject block) {
-        var target = new Vector3(-20, 55, 0);
-        while (block.transform.position != target) {
-            block.transform.position = Vector3.MoveTowards(block.transform.position, target, 100 * Time.deltaTime);
-            yield return null;
-        }
-    }
 }

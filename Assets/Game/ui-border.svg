@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   sodipodi:docname="ui-border.svg"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="400"
+     inkscape:cy="560"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:pagecheckerboard="true"
+     showborder="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="986"
+     inkscape:window-x="-11"
+     inkscape:window-y="-11"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect833"
+       style="fill:#ffcc00;fill-rule:evenodd;stroke:#000000;stroke-width:20.4549"
+       d="M 139.19922,10.226562 C 67.749098,10.226563 10.226562,67.749098 10.226562,139.19922 v 689.16016 c 1e-6,71.45011 57.522536,128.97265 128.972658,128.97265 h 689.16016 c 71.45011,0 128.97265,-57.52254 128.97265,-128.97265 V 139.19922 c 0,-71.450122 -57.52254,-128.972658 -128.97265,-128.972658 z m -11.65039,88.351563 h 712.46094 c 16.04991,0 28.9707,12.920775 28.9707,28.970705 v 712.46094 c 0,16.04991 -12.92079,28.9707 -28.9707,28.9707 H 127.54883 c -16.04993,0 -28.970705,-12.92079 -28.970705,-28.9707 V 127.54883 c 0,-16.04993 12.920775,-28.970705 28.970705,-28.970705 z"
+       transform="scale(0.26458333)"
+       inkscape:export-xdpi="25.4"
+       inkscape:export-ydpi="25.4" />
+  </g>
+</svg>

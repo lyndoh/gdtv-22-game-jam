@@ -12,6 +12,9 @@ public class WormFood : MonoBehaviour
     [SerializeField]
     BlockType blockType;
 
+    [SerializeField]
+    GameObject blockPrefab;
+
     Vector3[] rotationSet;
 
     List<int>[] rotationGrid;   
