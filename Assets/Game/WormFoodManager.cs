@@ -20,17 +20,21 @@ public class WormFoodManager : MonoBehaviour
     
 
     float dropTimeLimit = 5.0f;
+    int blocksDropped = 0;
     int currentRow;
     int currentCol;
+    int foodQueued;
     
     void Start()
     {
         dropTimeLimit = 5.0f;
+        blocksDropped = 0;
         activeFood = null;
+        foodQueued = 0;
         
         foodQueue = new List<GameObject>();
-        for (int i = 0; i < 10; ++i) {
-            foodQueue.Add(foodPrefabs[Random.Range(0, foodPrefabs.Count)]);
+        for (int i = 0; i < 4; ++i) {
+            QueueFood();
         }
         StartCoroutine(PlayFood());
     }
@@ -49,8 +53,9 @@ public class WormFoodManager : MonoBehaviour
         // }
         var dropSource = new Vector3(0, gameGrid.GetGroundLevel() - 4 + (gameGrid.GetRowCount() * 4), 0);
 
-        foreach (var foodPrefab in foodQueue) {
-            activeFood = Instantiate(foodPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        while (true) {
+            activeFood = foodQueue[0];
+            activeFood.SetActive(true);
             var wormFood = activeFood.GetComponent<WormFood>();
             // Should rotation be set based on food type?
             for (int i = 0; i < Random.Range(0, 4); ++i) {
@@ -123,6 +128,14 @@ public class WormFoodManager : MonoBehaviour
                 yield return null;
             }
             bulldozer.AllowClear(false);
+
+            foodQueue.RemoveAt(0);
+            QueueFood();
+
+            ++blocksDropped;
+            if (blocksDropped % 10 == 0 && dropTimeLimit > 0.9f) {
+                dropTimeLimit -= 0.2f;
+            }
         }
     }
 
@@ -152,7 +165,18 @@ public class WormFoodManager : MonoBehaviour
         activeFood.transform.position = new Vector3(-24 + (col * 4), gameGrid.GetGroundLevel() + (currentRow * 4));
     }
 
-    public GameObject GetBlock(int row, int col) {
-        return gameGrid.GetFood(row, col);
+    void QueueFood() {
+        ++foodQueued;
+
+        var isPlusOne = (foodQueued > 0 && foodQueued % 10 == 0);
+        var foodPrefab = isPlusOne ? foodPrefabs[0] : foodPrefabs[Random.Range(0, foodPrefabs.Count)];
+        
+        var queuedFood = Instantiate(foodPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        queuedFood.SetActive(false);
+        var wormFood = queuedFood.GetComponent<WormFood>();
+        if (isPlusOne) {
+            wormFood.SetFoodType(WormFood.FoodType.PlusOneWorm);
+        }
+        foodQueue.Add(queuedFood);
     }
 }

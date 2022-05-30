@@ -8,6 +8,8 @@ public class GameGrid : MonoBehaviour
     GameObject singlePrefab;
     [SerializeField]
     ScoreBoard scoreBoard;
+    [SerializeField]
+    WormManager wormManager;
 
     List<List<GameObject>> gameGridFood;
     List<List<GameObject>> gameGridDirt;
@@ -34,6 +36,7 @@ public class GameGrid : MonoBehaviour
             new Vector3(-24 + (col * 4), GetGroundLevel() + (row * 4), 0),
             Quaternion.identity);
         // Copy food type attributes etc. required for feeding
+        single.GetComponent<WormFood>().SetFoodType(sourceFood.GetComponent<WormFood>().GetFoodType());
         gameGridFood[row][col] = single;
     }
 
@@ -96,13 +99,17 @@ public class GameGrid : MonoBehaviour
     }
 
     IEnumerator ClearBlockAnim(GameObject block) {
-        var target = new Vector3(-20, 55, 0);
+        var isWorm = block.GetComponent<Dirt>().foodBlock.GetComponent<WormFood>().GetFoodType() == WormFood.FoodType.PlusOneWorm;
+        var target = isWorm ? new Vector3(0, GetGroundLevel(), 0) : new Vector3(-20, 55, 0);
         while (block.transform.position != target) {
             block.transform.position = Vector3.MoveTowards(block.transform.position, target, 100 * Time.deltaTime);
             yield return null;
         }
-        Destroy(block);
+        if (isWorm) {
+            wormManager.AddWorm(block.transform.position.x);
+        }
         scoreBoard.ScoreBlock();
+        Destroy(block);        
     }
 
     IEnumerator ClearEmptyRowsAnim(int upToRows) {
@@ -118,7 +125,7 @@ public class GameGrid : MonoBehaviour
                     gameGridFood[toRow][col].transform.position = new Vector3(-24 + (col * 4), GetGroundLevel() + (toRow * 4), 0);
                 }
                 if (gameGridDirt[toRow][col] != null) {
-                    gameGridDirt[toRow][col].transform.position = new Vector3(-24 + (col * 4), GetGroundLevel() + (toRow * 4), 0);
+                    gameGridDirt[toRow][col].transform.position = new Vector3(-24 + (col * 4), GetGroundLevel() + 2 + (toRow * 4), 0);
                 }
             }
         }

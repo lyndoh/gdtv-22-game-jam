@@ -269,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   singlePrefab: {fileID: 5411531031019246681, guid: b579492f8135821418822eee2fb2af44, type: 3}
   scoreBoard: {fileID: 241578988}
+  wormManager: {fileID: 319911992}
 --- !u!1 &241578983
 GameObject:
   m_ObjectHideFlags: 0

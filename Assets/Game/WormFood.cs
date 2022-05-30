@@ -19,6 +19,7 @@ public class WormFood : MonoBehaviour
 
     List<int>[] rotationGrid;   
     bool ghost; 
+    FoodType foodType;
 
     static WormFood() {
         var gridSize = rotationGridCols.Length * rotationGridCols[0].Length;
@@ -65,7 +66,17 @@ public class WormFood : MonoBehaviour
         }
     }
 
+    public void SetFoodType(FoodType foodType) {
+        this.foodType = foodType;
+        GetComponentInChildren<WormFoodBlocks>().gameObject.GetComponentsInChildren<SpriteRenderer>(true)[1].enabled = (foodType != FoodType.Nothing);
+    }
+
+    public FoodType GetFoodType() {
+        return foodType;
+    }
+
     void Awake() {
+        foodType = FoodType.Nothing;
         ghost = false;
         rotationSet = rotationSets[(int)blockType];
         rotationGrid = rotationGrids[(int)blockType];
@@ -186,5 +197,10 @@ public class WormFood : MonoBehaviour
         twoRotationGrid,
         threeCornerRotationGrid,
         fourTeeRotationGrid
+    };
+
+    public enum FoodType {
+        Nothing,
+        PlusOneWorm,
     };
 }

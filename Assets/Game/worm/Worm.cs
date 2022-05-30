@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Worm : MonoBehaviour
 {
-    public int wormId;
     public GroundManager groundManager;
     public Vector3 feedingTarget;
 

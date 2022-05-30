@@ -15,6 +15,7 @@ public class GroundManager : MonoBehaviour
     
     int feedingRow;
     bool pauseWhileClearing;
+    float eatingSpeed;
 
     public IEnumerable<GameObject> GetFeedingBlocks() {
         return gameGrid.GetRowDirt(feedingRow).Where(x => x != null && !x.GetComponent<Dirt>().isFinished);
@@ -32,9 +33,14 @@ public class GroundManager : MonoBehaviour
         this.pauseWhileClearing = pause;
     }
 
+    public void SetEatingSpeed(float speed) {
+        eatingSpeed = speed;
+    }
+
     void Start() {
         pauseWhileClearing = false;
         feedingRow = 0;
+        eatingSpeed = 0.25f; // 0.25 blocks per second
     }
 
     void Update() {
@@ -46,7 +52,7 @@ public class GroundManager : MonoBehaviour
             var hasAny = false;
             var allFinished = true;
             for (int col = 0; col < 13; ++col) {
-                var foodBlock = wormFoodManager.GetBlock(row, col);
+                var foodBlock = gameGrid.GetFood(row, col);
                 if (!gameGrid.HasDirt(row, col) && gameGrid.HasFood(row, col)) {
                     StartCoroutine(AddDirt(row, col, gameGrid.GetFood(row, col)));
                 }
@@ -75,17 +81,24 @@ public class GroundManager : MonoBehaviour
                 yield return null;
                 continue;
             }
-            if (row != feedingRow) {
+            // Check if block is in the feeding row. Need to get this dynamically as
+            // The blocks row may change after line clears. "row" is not reliable after we yield
+            // Same with dirtpos, needs to be recalculated in case row changes
+            if (gameGrid.GetDirt(feedingRow, col) != dirt) {
                 yield return null;
                 continue;
             }
-            scale += Time.deltaTime * 0.25f;
-            dirt.transform.localScale = new Vector3(1, scale, 1);
-            dirt.transform.position = dirtPos - new Vector3(0, (1 - scale) * 2, 0);
-            yield return null;
+            dirtPos = new Vector3((col * 4) - 24, feedingRow * 4 - 44, 0);
+            scale += Time.deltaTime * eatingSpeed;
+            if (scale >= 1.0f) {
+                dirt.transform.localScale = new Vector3(1, 1, 1);
+                dirt.transform.position = dirtPos;
+            } else {
+                dirt.transform.localScale = new Vector3(1, scale, 1);
+                dirt.transform.position = dirtPos - new Vector3(0, (1 - scale) * 2, 0);
+                yield return null;
+            }
         }
-        dirt.transform.localScale = new Vector3(1, 1, 1);
-        dirt.transform.position = dirtPos;
         dirt.GetComponent<Dirt>().isFinished = true;
     }
 

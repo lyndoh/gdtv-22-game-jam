@@ -71,6 +71,7 @@ public class Bulldozer : MonoBehaviour
             yield return null;
         }
         spriteRenderer.enabled = false;
+        spriteRenderer.flipX = false;
     }
 
     IEnumerator ClearRows(int upToRow) {

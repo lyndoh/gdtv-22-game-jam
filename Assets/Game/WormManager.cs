@@ -17,21 +17,26 @@ public class WormManager : MonoBehaviour
     List<GameObject> worms;
     List<GameObject> feedingBlocks;
 
+    public void AddWorm(float? xpos = null) {
+        var startPos = new Vector3(Random.Range(-27f, 27f), gameGrid.GetGroundLevel(), 0);
+        if (xpos != null) {
+            startPos.x = xpos.Value;
+        }
+        var worm = Instantiate(wormPrefab, startPos, Quaternion.identity);
+        var wormComponent = worm.GetComponent<Worm>();
+        wormComponent.groundManager = groundManager;
+        wormComponent.SetTarget(startPos);
+        worms.Add(worm);
+        SetEatingSpeed();
+    }
+
     void Start() {
         feedingBlocks = new List<GameObject>();
         worms = new List<GameObject>();
 
-        var numberOfWorms = 3;
-
-        for (int i = 0; i < numberOfWorms; ++i) {
-            var startPos = new Vector3(Random.Range(-27f, 27f), gameGrid.GetGroundLevel(), 0);
-            var worm = Instantiate(wormPrefab, startPos, Quaternion.identity);
-            var wormComponent = worm.GetComponent<Worm>();
-            wormComponent.wormId = i;
-            wormComponent.groundManager = groundManager;
-            wormComponent.SetTarget(startPos);
-            worms.Add(worm);
-        }
+        AddWorm();
+        AddWorm();
+        AddWorm();
     }
 
     void Update() {
@@ -40,7 +45,7 @@ public class WormManager : MonoBehaviour
         if (!groundFeedingBlocks.SequenceEqual(feedingBlocks)) {
             feedingBlocks = groundFeedingBlocks;
             TargetWorms();
-            
+            SetEatingSpeed();
         }
 
     }
@@ -54,5 +59,10 @@ public class WormManager : MonoBehaviour
         for (int i = 0; i < worms.Count; ++i) {
             worms[i].GetComponent<Worm>().SetTarget(feedingBlocks[i % feedingBlocks.Count].transform.position + offset);
         }
+    }
+
+    void SetEatingSpeed() {
+        var eatingSpeed = 0.1f + (worms.Count * 0.1f / Mathf.Max(feedingBlocks.Count, 1f));
+        groundManager.SetEatingSpeed(eatingSpeed);
     }
 }
