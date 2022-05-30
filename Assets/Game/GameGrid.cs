@@ -36,7 +36,8 @@ public class GameGrid : MonoBehaviour
             new Vector3(-24 + (col * 4), GetGroundLevel() + (row * 4), 0),
             Quaternion.identity);
         // Copy food type attributes etc. required for feeding
-        single.GetComponent<WormFood>().SetFoodType(sourceFood.GetComponent<WormFood>().GetFoodType());
+        var wormFood = sourceFood.GetComponent<WormFood>();
+        single.GetComponent<WormFood>().SetFoodType(wormFood.GetFoodType(), wormFood.GetFoodTypeSprite());
         gameGridFood[row][col] = single;
     }
 

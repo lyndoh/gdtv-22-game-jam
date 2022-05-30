@@ -5,7 +5,22 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    [SerializeField]
+    GameObject titlePanel;
+    [SerializeField]
+    GameObject introPanel;
+
+    void Start() {
+        titlePanel.SetActive(true);
+        introPanel.SetActive(false);
+    }
+
     public void OnPlay() {
+        titlePanel.SetActive(false);
+        introPanel.SetActive(true);
+    }
+
+    public void OnStart() {
         SceneManager.LoadScene("GameScene");
     }
 

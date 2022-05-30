@@ -14,6 +14,11 @@ public class ScoreBoard : MonoBehaviour
 
         GetComponent<TextMeshProUGUI>().text = score.ToString();
     }
+
+    public int GetScore() {
+        return score;
+    }
+    
     // Start is called before the first frame update
     void Start()
     {

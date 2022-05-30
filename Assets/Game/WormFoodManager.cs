@@ -8,6 +8,8 @@ public class WormFoodManager : MonoBehaviour
     [SerializeField]
     List<Sprite> foodSprites;
     [SerializeField]
+    Sprite plusOneWormSprite;
+    [SerializeField]
     List<GameObject> foodPrefabs;
     [SerializeField]
     Bulldozer bulldozer;
@@ -17,7 +19,7 @@ public class WormFoodManager : MonoBehaviour
     List<GameObject> foodQueue;
     GameObject activeFood;
 
-    
+    public bool gameOver;
 
     float dropTimeLimit = 5.0f;
     int blocksDropped = 0;
@@ -31,6 +33,7 @@ public class WormFoodManager : MonoBehaviour
         blocksDropped = 0;
         activeFood = null;
         foodQueued = 0;
+        gameOver = false;
         
         foodQueue = new List<GameObject>();
         for (int i = 0; i < 4; ++i) {
@@ -68,6 +71,11 @@ public class WormFoodManager : MonoBehaviour
             currentCol = 6;
 
             SetActiveFoodPositionForColumn(currentCol);
+
+            if (currentRow >= gameGrid.GetRowCount() - 2) { // HACK quicker than testing height of block
+                gameOver = true;
+                yield break;
+            }
     
             var dropped = false;
             var accumulatedTime = 0f;
@@ -134,7 +142,7 @@ public class WormFoodManager : MonoBehaviour
 
             ++blocksDropped;
             if (blocksDropped % 10 == 0 && dropTimeLimit > 0.9f) {
-                dropTimeLimit -= 0.2f;
+                dropTimeLimit -= 0.5f;
             }
         }
     }
@@ -175,7 +183,9 @@ public class WormFoodManager : MonoBehaviour
         queuedFood.SetActive(false);
         var wormFood = queuedFood.GetComponent<WormFood>();
         if (isPlusOne) {
-            wormFood.SetFoodType(WormFood.FoodType.PlusOneWorm);
+            wormFood.SetFoodType(WormFood.FoodType.PlusOneWorm, plusOneWormSprite);
+        } else {
+            wormFood.SetFoodType(WormFood.FoodType.Food, foodSprites[Random.Range(0, foodSprites.Count)]);
         }
         foodQueue.Add(queuedFood);
     }

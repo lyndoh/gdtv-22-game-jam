@@ -66,13 +66,25 @@ public class WormFood : MonoBehaviour
         }
     }
 
-    public void SetFoodType(FoodType foodType) {
+    public void SetFoodType(FoodType foodType, Sprite foodSprite) {
         this.foodType = foodType;
-        GetComponentInChildren<WormFoodBlocks>().gameObject.GetComponentsInChildren<SpriteRenderer>(true)[1].enabled = (foodType != FoodType.Nothing);
+        var spriteRenderer = GetComponentInChildren<WormFoodBlocks>().GetComponentsInChildren<SpriteRenderer>(true)[1];
+        
+        if (foodType != FoodType.Nothing) {
+            spriteRenderer.enabled = true;
+            spriteRenderer.sprite = foodSprite;
+            spriteRenderer.sortingOrder = (foodType == FoodType.PlusOneWorm) ? 5 : 3;
+        } else {
+            spriteRenderer.enabled = false;
+        }
     }
 
     public FoodType GetFoodType() {
         return foodType;
+    }
+
+    public Sprite GetFoodTypeSprite() {
+        return GetComponentInChildren<WormFoodBlocks>().GetComponentsInChildren<SpriteRenderer>(true)[1].sprite;
     }
 
     void Awake() {
@@ -202,5 +214,6 @@ public class WormFood : MonoBehaviour
     public enum FoodType {
         Nothing,
         PlusOneWorm,
+        Food,
     };
 }
